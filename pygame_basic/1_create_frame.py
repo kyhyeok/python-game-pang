@@ -24,6 +24,14 @@ to_x = 0
 to_y = 0
 character_speed = 0.5
 
+# 적 캐릭터
+enemy = pygame.image.load("C:\\python\\game-pangpang\\pygame_basic\\enemy.png")
+enemy_size = enemy.get_rect().size
+enemy_width = enemy_size[0]
+enemy_height = enemy_size[1]
+enemy_x_position = (screen_width / 2) - (enemy_width / 2)
+enemy_y_position = (screen_height / 2) - (enemy_height / 2)
+
 running = True
 while running:
     dt = clock.tick(60) # 게임 화면의 초당 프레임 수를 설정
@@ -61,9 +69,23 @@ while running:
     elif character_y_position > screen_height - character_height:
         character_y_position = screen_height - character_height
 
-    screen.blit(background, (0, 0))
+    # 충돌 처리를 위한 rect 정보 업데이트
+    character_rect = character.get_rect()
+    character_rect.left = character_x_position
+    character_rect.top = character_y_position
 
+    enemy_rect = enemy.get_rect()
+    enemy_rect.left = enemy_x_position
+    enemy_rect.top = enemy_y_position
+
+    # 충돌 처리
+    if character_rect.colliderect(enemy_rect):
+        print("충돌했어요")
+        running = False
+
+    screen.blit(background, (0, 0))
     screen.blit(character, (character_x_position, character_y_position))
+    screen.blit(enemy, (enemy_x_position, enemy_y_position)) # 적 그리그
 
     pygame.display.update()
 
