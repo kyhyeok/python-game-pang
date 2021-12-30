@@ -8,6 +8,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 pygame.display.set_caption("PangPang")
 
+# FPS
+clock = pygame.time.Clock()
+
 background = pygame.image.load("C:\\python\\game-pangpang\\pygame_basic\\background.png")
 
 character = pygame.image.load("C:\\python\\game-pangpang\\pygame_basic\\character.png")
@@ -19,23 +22,25 @@ character_y_position = screen_height - character_height
 
 to_x = 0
 to_y = 0
-move_value = 0.5
+character_speed = 0.5
 
 running = True
 while running:
+    dt = clock.tick(60) # 게임 화면의 초당 프레임 수를 설정
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                to_x -= move_value
+                to_x -= character_speed
             elif event.key == pygame.K_RIGHT:
-                to_x += move_value
+                to_x += character_speed
             elif event.key == pygame.K_UP:
-                to_y -= move_value
+                to_y -= character_speed
             elif event.key == pygame.K_DOWN:
-                to_y += move_value
+                to_y += character_speed
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -43,8 +48,8 @@ while running:
             elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 to_y = 0
 
-    character_x_position += to_x
-    character_y_position += to_y
+    character_x_position += to_x * dt
+    character_y_position += to_y * dt
 
     if character_x_position < 0:
         character_x_position = 0
