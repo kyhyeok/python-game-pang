@@ -58,6 +58,9 @@ balls.append({
     "init_speed_y": ball_speed_y[0]
 })
 
+weapon_to_remove = -1
+ball_to_remove = -1
+
 running = True
 while running:
     dt = clock.tick(30)
@@ -109,6 +112,44 @@ while running:
 
         ball_value["position_x"] += ball_value["to_x"]
         ball_value["position_y"] += ball_value["to_y"]
+
+    character_rect = character.get_rect()
+    character_rect.left = character_x_position
+    character_rect.top = character_y_position
+
+    for ball_index, ball_value in enumerate(balls):
+        ball_position_x = ball_value["position_x"]
+        ball_position_y = ball_value["position_y"]
+        ball_image_index = ball_value['image_index']
+
+        ball_rect = ball_images[ball_image_index].get_rect()
+        ball_rect.left = ball_position_x
+        ball_rect.top = ball_position_y
+
+        if character_rect.colliderect(ball_rect):
+            running = False
+            break
+
+        for weapon_index, weapon_value in enumerate(weapons):
+            weapon_position_x = weapon_value[0]
+            weapon_position_y = weapon_value[1]
+
+            weapon_rect = weapon.get_rect()
+            weapon_rect.left = weapon_position_x
+            weapon_rect.top = weapon_position_y
+
+            if weapon_rect.colliderect(ball_rect):
+                weapon_to_remove = weapon_index
+                ball_to_remove = ball_index
+                break
+
+    if ball_to_remove > -1:
+        del balls[ball_to_remove]
+        ball_to_remove = -1
+
+    if weapon_to_remove > -1:
+        del weapons[weapon_to_remove]
+        weapon_to_remove = -1
 
     screen.blit(background, (0, 0))
 
