@@ -141,7 +141,33 @@ while running:
             if weapon_rect.colliderect(ball_rect):
                 weapon_to_remove = weapon_index
                 ball_to_remove = ball_index
-                break
+
+                if ball_image_index < 3:
+                    ball_width = ball_rect.size[0]
+                    ball_height = ball_rect.size[1]
+
+                    small_ball_rect = ball_images[ball_image_index + 1].get_rect()
+                    small_ball_width = small_ball_rect.size[0]
+                    small_ball_height = small_ball_rect.size[1]
+
+                    balls.append({
+                        "position_x": ball_position_x + ((ball_width / 2) - (small_ball_width / 2)),
+                        "position_y": ball_position_y + ((ball_height / 2) - (small_ball_height / 2)),
+                        "image_index": ball_image_index + 1,
+                        "to_x": -3,
+                        "to_y": -6,
+                        "init_speed_y": ball_speed_y[ball_image_index + 1]
+                    })
+
+                    balls.append({
+                        "position_x": ball_position_x + ((ball_width / 2) - (small_ball_width / 2)),
+                        "position_y": ball_position_y + ((ball_height / 2) - (small_ball_height / 2)),
+                        "image_index": ball_image_index + 1,
+                        "to_x": 3,
+                        "to_y": -6,
+                        "init_speed_y": ball_speed_y[ball_image_index + 1]
+                    })
+                    break
 
     if ball_to_remove > -1:
         del balls[ball_to_remove]
