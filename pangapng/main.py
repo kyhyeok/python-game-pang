@@ -90,10 +90,36 @@ while running:
     weapons = [[weapon[0], weapon[1] - weapon_speed] for weapon in weapons]
     weapons = [[weapon[0], weapon[1]] for weapon in weapons if weapon[1] > 0]
 
+    for ball_index, ball_value in enumerate(balls):
+        ball_position_x = ball_value["position_x"]
+        ball_position_y = ball_value["position_y"]
+        ball_image_index = ball_value['image_index']
+
+        ball_size = ball_images[ball_image_index].get_rect().size
+        ball_width = ball_size[0]
+        ball_height = ball_size[1]
+
+        if ball_position_x <= 0 or ball_position_x > screen_width - ball_width:
+            ball_value["to_x"] = ball_value["to_x"] * -1
+
+        if ball_position_y >= screen_height - stage_height - ball_height:
+            ball_value["to_y"] = ball_value["init_speed_y"]
+        else:
+            ball_value["to_y"] += 0.5
+
+        ball_value["position_x"] += ball_value["to_x"]
+        ball_value["position_y"] += ball_value["to_y"]
+
     screen.blit(background, (0, 0))
 
     for weapon_x_position, weapon_y_position in weapons:
         screen.blit(weapon, (weapon_x_position, weapon_y_position))
+
+    for index, value in enumerate(balls):
+        ball_position_x = value['position_x']
+        ball_position_y = value['position_y']
+        ball_image_index = value["image_index"]
+        screen.blit(ball_images[ball_image_index], (ball_position_x, ball_position_y))
 
     screen.blit(stage, (0, screen_height - stage_height))
     screen.blit(character, (character_x_position, character_y_position))
