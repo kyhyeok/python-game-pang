@@ -38,6 +38,26 @@ weapons = []
 
 weapon_speed = 10
 
+ball_images = [
+    pygame.image.load(os.path.join(image_path, "balloon1.png")),
+    pygame.image.load(os.path.join(image_path, "balloon2.png")),
+    pygame.image.load(os.path.join(image_path, "balloon3.png")),
+    pygame.image.load(os.path.join(image_path, "balloon4.png"))
+]
+
+ball_speed_y = [-18, -15, -12, -9]
+
+balls = []
+
+balls.append({
+    "position_x": 50,
+    "position_y": 50,
+    "image_index": 0,
+    "to_x": 3,
+    "to_y": -6,
+    "init_speed_y": ball_speed_y[0]
+})
+
 running = True
 while running:
     dt = clock.tick(30)
@@ -68,7 +88,7 @@ while running:
         character_x_position = screen_width - character_width
 
     weapons = [[weapon[0], weapon[1] - weapon_speed] for weapon in weapons]
-    weapons = [[weapon[0], weapon[1] ] for weapon in weapons if weapon[1] > 0]
+    weapons = [[weapon[0], weapon[1]] for weapon in weapons if weapon[1] > 0]
 
     screen.blit(background, (0, 0))
 
